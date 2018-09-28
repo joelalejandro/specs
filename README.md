@@ -46,7 +46,7 @@ The file [proposed/criteria.md](proposed/criteria.md) contains criteria for prop
 
 A state channel is an on-chain multisig state deposit holder, a set of counterfactually instantiated state channel apps, the set of dependency nonces, the set of signed commitments (stored by each participant locally), and any other state needed for disputes or to perform operations in the channel.
 
-### Commitments 
+### Commitments
 
 We recall the definition of a commitment as a signed transaction (piece of data) that allows the owner to perform a certain action. More precisely, all our commitments consist of the parameters that should be passed to `MinimumViableMultisig::execTransaction` and cause it to perform the action, which is to call the internal `MinimumViableMultisig::execute` function, which performs a message call originating from the multisig.
 
@@ -89,8 +89,7 @@ TBD
 The install commitment is a multisend that
 
 - sets the free balance state to a new state with some balance removed
-- sets the app dependency nonce to 1
-- does a conditional transfer, which checks that the the dependency nonce is set to 1
+- does a conditional transfer, which checks that the the dependency nonce is unset
 
 ### Update
 
@@ -100,7 +99,7 @@ The update commitment sets the app state hash.
 
 The uninstall commitment is a multisend that
 
-- sets the app dependency nonce to 2
+- sets the app dependency nonce to 1
 - sets the freebalance state to a new state with some balance added
 
 ### Cleanup
