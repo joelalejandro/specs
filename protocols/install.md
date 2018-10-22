@@ -11,7 +11,6 @@ Notice how the funds move out of the free balance and into the tic-tac-toe appli
 ## Commitment
 
 - updates the free balance state, decrementing both parties by the amount they contribute to the application install
-- sets the nonce registry entry to 1, ensuring the "condition" in the Conditional Transfer is true
 - executes the conditional transfer via delegatecall, withdrawing the funds from the multisig and distributing them according to the state of the application which the conditional transfer points to.
 
 ## Handshake
@@ -127,19 +126,6 @@ delegatecall(
                 ]
             ),
         ]
-    ) + encodeArgs(/* set dependency nonce */
-        ("uint256", "address", "uint256", "bytes"),
-        [
-            0,
-            NONCE_REGISTRY,
-            0,
-            encode(
-                "setNonce(uint256,byets32,uint256)",
-                [
-                    0, salt, 1
-                ]
-            ),
-        ]
     ) + encodeArgs(/* do conditional transfer */
         ("uint256", "address", "uint256", "bytes"),
         [
@@ -149,9 +135,9 @@ delegatecall(
             encode(
                 "executeAppConditionalTransfer(address,address,bytes32,uint256,bytes32,tuple(uint8,uint256,address))",
                 [
+                    REGISTRY,
                     NONCE_REGISTRY,
                     key,
-                    1,
                     app.cfAddress
                     (
                         assetType,
